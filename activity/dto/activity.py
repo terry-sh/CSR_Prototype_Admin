@@ -1,6 +1,6 @@
 import datetime
+import typing
 from dataclasses import dataclass
-from rest_framework_dataclasses.serializers import DataclassSerializer
 
 @dataclass
 class ActivityListItem:
@@ -10,5 +10,10 @@ class ActivityListItem:
     end_date: datetime.date
     name: str
     slogan: str
-    location: bool
+    location: str
     joined: bool
+
+@dataclass
+class ActivityList:
+    lang: str
+    data: typing.List[ActivityListItem]

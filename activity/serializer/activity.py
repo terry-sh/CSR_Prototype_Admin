@@ -1,6 +1,6 @@
 from rest_framework_dataclasses.serializers import DataclassSerializer
-from ..dto.activity import ActivityListItem
+from ..dto.activity import ActivityListItem, ActivityList
 
-class ActivityListItemSerializer(DataclassSerializer):
+class ActivityListSerializer(DataclassSerializer):
     class Meta:
-        dataclass = ActivityListItem
+        dataclass = ActivityList
