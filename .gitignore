@@ -1,1 +1,7 @@
+media/
+static/
+**/migrations/
+**/.DS_Store
+
 *.sqlite3
+*.png

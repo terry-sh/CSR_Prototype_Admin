@@ -4,7 +4,8 @@ from .language import Language
 STATUS_CHOICE = (
     (0, 'Draft'),
     (1, 'Active'),
-    (2, 'Deactive'),
+    (2, 'Finished'),
+    (3, 'Discard'),
 )
 
 # 活动
@@ -17,9 +18,9 @@ class Activity(models.Model):
     # 主要用于方便Admin用户管理活动
     name = models.CharField('Name', max_length=256)
 
-    # **封面图片**
+    # **封面图片/ICON**
     # 用户app端的展示
-    cover_image = models.ImageField('Covdr Image')
+    cover_image = models.ImageField('Cover Image')
 
     # **开始时间**
     start_date = models.DateField('Start Date')
@@ -29,14 +30,11 @@ class Activity(models.Model):
 
     # **参加人数**
     # 用于限制活动参数的总人数
-    capacity = models.IntegerField('Capacity')
-
-    # **活动地点**
-    location = models.CharField('Short Name', max_length=512)
+    capacity = models.IntegerField('Capacity', default=500)
 
     # **活动地点的地理数据**
     # 如：经度纬度行政区划信息。可用于地图的显示等
-    geo_location = models.JSONField('Geo Location')
+    geo_location = models.JSONField('Geo Location', null=True)
 
     # **活动状态**
     # 活动在Admin管理中的状态，用于上架下架隐藏等
@@ -65,8 +63,15 @@ class ActivityTranslation(models.Model):
 
     # 名称
     name = models.CharField('Name', max_length=256)
+
+    # 简短的口号
+    slogan = models.CharField('Slogan', max_length=256)
+
+    # **活动地点**
+    location = models.CharField('Location', max_length=512)
+
     # 简介
-    introduction = models.TextField('Introduction')
+    introduction = models.TextField('Introduction', default='')
 
     class Meta:
         constraints = [

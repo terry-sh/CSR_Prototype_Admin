@@ -1,0 +1,1 @@
+from .activity_list import ActivityListViewSet
