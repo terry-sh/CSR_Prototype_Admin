@@ -11,13 +11,13 @@ class CategoryTranslation(models.Model):
     language = models.ForeignKey(
         Language,
         on_delete=models.CASCADE,
-        related_name="set",
+        related_name="category_translations",
         db_column="catetory_translation__language")
 
     category = models.ForeignKey(
         Category,
         on_delete=models.CASCADE,
-        related_name="set",
+        related_name="translations",
         db_column="catetory_translation__category")
 
     name = models.CharField('Name', max_length=256)
@@ -36,19 +36,19 @@ class CategoryActivity(models.Model):
     category = models.ForeignKey(
         Category,
         on_delete=models.CASCADE,
-        related_name="set",
+        related_name="all_activities",
         db_column="catetory_activity__category")
 
     activity = models.ForeignKey(
         Activity,
         on_delete=models.CASCADE,
-        related_name="set",
+        related_name="category",
         db_column="catetory_activity__activity")
 
     class Meta:
         constraints = [
             models.UniqueConstraint(
-                fields=['name', 'description'],
+                fields=['category', 'activity'],
                 name='unique_category_activity__category__activity'
             ),
         ]

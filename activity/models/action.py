@@ -5,7 +5,7 @@ class Action(models.Model):
     activity = models.ForeignKey(
         Activity,
         on_delete=models.CASCADE,
-        related_name="set",
+        related_name="activity_actions",
         db_column="activity"
     )
     name = models.CharField('Name', max_length=256)

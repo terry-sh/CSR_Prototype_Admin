@@ -1,7 +1,7 @@
 from django.db import models
 from .language import Language
 
-STATUS_CHOICE = (
+ACTIVIY_STATUS_CHOICE = (
     (0, 'Draft'),
     (1, 'Active'),
     (2, 'Finished'),
@@ -10,7 +10,7 @@ STATUS_CHOICE = (
 
 # 活动
 class Activity(models.Model):
-    # **可读性的ID**
+    # **Code**，可读性的ID
     # Example: csr_2025__corn_planting
     code = models.CharField('Code', max_length=256)
 
@@ -23,10 +23,16 @@ class Activity(models.Model):
     cover_image = models.ImageField('Cover Image')
 
     # **开始时间**
-    start_date = models.DateField('Start Date')
+    start_date = models.DateTimeField('Start Date')
 
     # **结束时间**
-    end_date = models.DateField('End Date')
+    end_date = models.DateTimeField('End Date')
+
+    # **报名开始时间**，可选
+    enroll_start_date = models.DateTimeField('Enroll Start Date', null=True)
+
+    # **报名终止时间**，可选
+    enroll_end_date = models.DateTimeField('Enroll End Date', null=True)
 
     # **参加人数**
     # 用于限制活动参数的总人数
@@ -42,7 +48,7 @@ class Activity(models.Model):
         'Status',
         db_column = 'status',
         default=1,
-        choices=STATUS_CHOICE)
+        choices=ACTIVIY_STATUS_CHOICE)
 
     def __str__(self):
         return self.name
@@ -52,13 +58,13 @@ class ActivityTranslation(models.Model):
     activity = models.ForeignKey(
         Activity,
         on_delete=models.CASCADE,
-        related_name="set",
+        related_name="translations",
         db_column="activity_translation__activity")
 
     language = models.ForeignKey(
         Language,
         on_delete=models.CASCADE,
-        related_name="set",
+        related_name="activity_translations",
         db_column="activity_translation__language")
 
     # 名称

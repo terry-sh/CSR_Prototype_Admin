@@ -5,13 +5,15 @@ from dataclasses import dataclass
 @dataclass
 class ActivityListItem:
     id: int
-    cover_image: str
-    start_date: datetime.date
-    end_date: datetime.date
+    coverImage: str
+    startDate: datetime.datetime
+    endDate: datetime.datetime
     name: str
     slogan: str
     location: str
-    joined: bool
+    progress: int
+    numberOfParticipants: int
+    enrollStatus: typing.Optional[str]
 
 @dataclass
 class ActivityList:

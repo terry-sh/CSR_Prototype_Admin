@@ -7,7 +7,7 @@ class Contribution(models.Model):
     event = models.ForeignKey(
         Event,
         on_delete=models.CASCADE,
-        related_name="set",
+        related_name="all_contributions",
         db_column="event")
 
     # 贡献的默认值
@@ -27,7 +27,7 @@ class Contribution(models.Model):
     unit = models.ForeignKey(
         Unit,
         on_delete=models.CASCADE,
-        related_name="set",
+        related_name="related_contributions",
         db_column="unit")
 
 class ContributionTranslation(models.Model):

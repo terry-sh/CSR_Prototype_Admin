@@ -1,1 +1,2 @@
-from .activity_list import ActivityListViewSet
+from .activity import ActivityViewSet
+from .activity_enroll import ActivityEnrollViewSet

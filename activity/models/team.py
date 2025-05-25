@@ -7,7 +7,7 @@ class Team(models.Model):
     activity = models.ForeignKey(
         Activity,
         on_delete=models.CASCADE,
-        related_name="set",
+        related_name="all_teams",
         db_column="activity")
     name = models.CharField('Name', max_length=256)
     description = models.TextField('Description')
@@ -23,13 +23,13 @@ class TeamMember(models.Model):
     team = models.ForeignKey(
         Team,
         on_delete=models.CASCADE,
-        related_name="set",
+        related_name="all_members",
         db_column="team")
 
     member = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
-        related_name="set",
+        related_name="all_teams",
         db_column="member")
 
     role = models.IntegerField('Role', db_column = 'Role', default=2, choices=TEAM_ROLE)

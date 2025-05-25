@@ -6,7 +6,7 @@ class Event(models.Model):
     activity = models.ForeignKey(
         Activity,
         on_delete=models.CASCADE,
-        related_name="set",
+        related_name="all_events",
         db_column="activity"
     )
     name = models.CharField('Name', max_length=256)
