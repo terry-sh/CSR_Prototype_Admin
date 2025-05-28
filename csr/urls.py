@@ -23,6 +23,8 @@ from activity.views import ActivityViewSet, ActivityEnrollViewSet, ActivityEvent
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
+    TokenVerifyView,
+    TokenBlacklistView,
 )
 
 urlpatterns = [
@@ -30,6 +32,8 @@ urlpatterns = [
     # ----- Auth API ----- #
     path('api/auth/login', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/auth/token/refresh', TokenRefreshView.as_view(), name='token_refresh'),
+    path('api/auth/token/verify', TokenVerifyView.as_view(), name='token_verify'),
+    path('api/auth/logout', TokenBlacklistView.as_view(), name='token_blacklist'),
 
     # ----- Activity API ----- #
     path('api/activity/newest', ActivityViewSet.as_view({
