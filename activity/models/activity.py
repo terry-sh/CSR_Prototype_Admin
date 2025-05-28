@@ -1,7 +1,7 @@
 from django.db import models
 from .language import Language
 
-ACTIVIY_STATUS_CHOICE = (
+ACTIVITY_STATUS_CHOICE = (
     (0, 'Draft'),
     (1, 'Active'),
     (2, 'Finished'),
@@ -48,7 +48,7 @@ class Activity(models.Model):
         'Status',
         db_column = 'status',
         default=1,
-        choices=ACTIVIY_STATUS_CHOICE)
+        choices=ACTIVITY_STATUS_CHOICE)
 
     def __str__(self):
         return self.name
@@ -59,13 +59,13 @@ class ActivityTranslation(models.Model):
         Activity,
         on_delete=models.CASCADE,
         related_name="translations",
-        db_column="activity_translation__activity")
+        db_column="activity")
 
     language = models.ForeignKey(
         Language,
         on_delete=models.CASCADE,
         related_name="activity_translations",
-        db_column="activity_translation__language")
+        db_column="language")
 
     # 名称
     name = models.CharField('Name', max_length=256)

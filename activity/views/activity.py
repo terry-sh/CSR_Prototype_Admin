@@ -10,14 +10,14 @@ from ..models.language import Language
 from ..models.activity import Activity, ActivityTranslation
 from ..models.activity_enroll import ActivityEnroll
 
-from ..dto.activity import ActivityListItem, ActivityList
+from ..dto.activity import ActivityListItemDto, ActivityListDto
 from ..serializer.activity import ActivityListSerializer
 
 def create_activity_item(activity: Activity, language: Language, user: User):
     # Content Translation
     tranlation = ActivityTranslation.objects.get(language=language, activity=activity)
     # Number of participants
-    number_of_participants: int = ActivityEnroll.objects.filter(activity=activity, approved=True).count()
+    number_of_participants: int = ActivityEnroll.objects.filter(activity=activity, status=1).count()
     # Progress of activity, 0% - 100%
     progress: int = 10
     # Whether current use has joined the activity
@@ -25,10 +25,10 @@ def create_activity_item(activity: Activity, language: Language, user: User):
     if not user.is_anonymous:
         enroll_record = ActivityEnroll.objects.filter(user=user, activity=activity)
         if enroll_record.exists():
-            approved = enroll_record.filter(approved=True).exists()
-            join_status = 'Approved' if approved else 'Pending'
+            approve_status = enroll_record[0].status
+            join_status = 'Approved' if approve_status == 1 else 'Pending' if approve_status == 0 else 'Rejected'
 
-    return ActivityListItem(
+    return ActivityListItemDto(
         id=activity.id,
         coverImage=activity.cover_image,
         startDate=activity.start_date,
@@ -48,10 +48,10 @@ class ActivityViewSet(viewsets.ViewSet):
         language_code: str = request.GET.get('lang', 'zh-Hans-CN')
 
         language: Language = Language.objects.get(code=language_code)
-        activity_list: list[ActivityListItem] = [create_activity_item(item, language, user)
+        activity_list: list[ActivityListDto] = [create_activity_item(item, language, user)
           for item in Activity.objects.filter(status=1).order_by('-start_date')]
 
-        list_dto = ActivityList(lang=language.code, data=activity_list)
+        list_dto = ActivityListDto(lang=language.code, data=activity_list)
         serializer = ActivityListSerializer(list_dto)
         json_content = json.dumps(serializer.data, ensure_ascii=False, cls=DjangoJSONEncoder)
         return HttpResponse(json_content, status=200, content_type="application/json")
@@ -63,10 +63,10 @@ class ActivityViewSet(viewsets.ViewSet):
         language_code: str = request.GET.get('lang', 'zh-Hans-CN')
 
         language: Language = Language.objects.get(code=language_code)
-        activity_list: list[ActivityListItem] = [create_activity_item(item, language, user)
+        activity_list: list[ActivityListItemDto] = [create_activity_item(item, language, user)
           for item in Activity.objects.filter(status__in=[1, 2]).order_by('-start_date')]
 
-        list_dto = ActivityList(lang=language.code, data=activity_list)
+        list_dto = ActivityListDto(lang=language.code, data=activity_list)
         serializer = ActivityListSerializer(list_dto)
         json_content = json.dumps(serializer.data, ensure_ascii=False, cls=DjangoJSONEncoder)
         return HttpResponse(json_content, status=200, content_type="application/json")
@@ -77,10 +77,10 @@ class ActivityViewSet(viewsets.ViewSet):
         language_code: str = request.GET.get('lang', 'zh-Hans-CN')
         language: Language = Language.objects.get(code=language_code)
 
-        activity_list: list[ActivityListItem] = [create_activity_item(item, language, user)
+        activity_list: list[ActivityListItemDto] = [create_activity_item(item, language, user)
           for item in Activity.objects.filter(status__in=[1, 2]).order_by('-start_date')]
 
-        list_dto = ActivityList(lang=language.code, data=activity_list)
+        list_dto = ActivityListDto(lang=language.code, data=activity_list)
         serializer = ActivityListSerializer(list_dto)
         json_content = json.dumps(serializer.data, ensure_ascii=False, cls=DjangoJSONEncoder)
         return HttpResponse(json_content, status=200, content_type="application/json")

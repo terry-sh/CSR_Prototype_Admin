@@ -1,23 +1,29 @@
 from django.db import models
+from .language import Language
 from .unit import Unit
-from .event import Event
+from .event import ActivityEvent
 
 # 活动中可贡献的项目
-class Contribution(models.Model):
+class ContributionItem(models.Model):
     event = models.ForeignKey(
-        Event,
+        ActivityEvent,
         on_delete=models.CASCADE,
         related_name="all_contributions",
         db_column="event")
 
+    name = models.CharField('Name', max_length=256)
+
     # 贡献的默认值
     defaultValuue = models.DecimalField('Default Value', default=1)
 
+    # 用户是否允许自定义贡献值
+    customizable = models.BooleanField('Is Customizable')
+
     # 贡献的最小值
-    mininum = models.DecimalField('Minumum Value', null=True)
+    mininumValue = models.DecimalField('Minumum Value', null=True)
 
     # 贡献的最大值
-    maximum = models.DecimalField('Maximum Value', null=True)
+    maximumValue = models.DecimalField('Maximum Value', null=True)
 
     # 贡献的单位，比如：
     # - 次数：参加了X次
@@ -31,13 +37,23 @@ class Contribution(models.Model):
         db_column="unit")
 
 class ContributionTranslation(models.Model):
+    language = models.ForeignKey(
+        Language,
+        on_delete=models.CASCADE,
+        related_name="contribution_translations",
+        db_column="language")
+    contribution_item = models.ForeignKey(
+        ContributionItem,
+        on_delete=models.CASCADE,
+        related_name="all_translations",
+        db_column="contribution_item")
     name = models.CharField('Name', max_length=256)
     description = models.TextField('Description')
 
 # 用户贡献值
 class UserContribution(models.Model):
-    contribution = Contribution
+    contribution = ContributionItem
     # 贡献值
     value = models.DecimalField('Value')
-    # 单位的扩展。比如金额的货币币种等。
-    unitExtension= models.CharField('Unit Extension')
+    # 扩展信息（备用）
+    extension = models.CharField('Extension')

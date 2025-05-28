@@ -3,7 +3,7 @@ import typing
 from dataclasses import dataclass
 
 @dataclass
-class ActivityListItem:
+class ActivityListItemDto:
     id: int
     coverImage: str
     startDate: datetime.datetime
@@ -16,6 +16,6 @@ class ActivityListItem:
     enrollStatus: typing.Optional[str]
 
 @dataclass
-class ActivityList:
+class ActivityListDto:
     lang: str
-    data: typing.List[ActivityListItem]
+    data: typing.List[ActivityListItemDto]

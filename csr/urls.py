@@ -18,8 +18,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path
-from activity.views import ActivityViewSet
-from activity.views import ActivityEnrollViewSet
+from activity.views import ActivityViewSet, ActivityEnrollViewSet, ActivityEventViewSet
 
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
@@ -43,6 +42,11 @@ urlpatterns = [
     path('api/activity/enroll/<int:activity_id>', ActivityEnrollViewSet.as_view({
         'post': 'enroll',
     })),
+    # Event list
+    path('api/activity/<int:activity_id>/events', ActivityEventViewSet.as_view({
+        'get': 'all_events',
+    })),
+    # Activity detail
     path('api/activity/<int:activity_id>', ActivityViewSet.as_view({
         'get': 'detail',
     })),
