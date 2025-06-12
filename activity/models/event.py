@@ -16,10 +16,13 @@ class ActivityEvent(models.Model):
     maximum_times = models.IntegerField('Maximum Times', default=1)
 
     # 用户未参与时的图标
-    inactive_icon = models.ImageField('Cover Image')
+    inactive_icon = models.ImageField('Inactive Icon')
 
     # 用户已参与时的图标
-    active_icon = models.ImageField('Cover Image')
+    active_icon = models.ImageField('Active Icon')
+
+    def __str__(self):
+        return self.name
 
 class ActivityEventTranslation(models.Model):
     language = models.ForeignKey(
@@ -27,12 +30,15 @@ class ActivityEventTranslation(models.Model):
         on_delete=models.CASCADE,
         related_name="event_translations",
         db_column="language")
+
     event = models.ForeignKey(
         ActivityEvent,
         on_delete=models.CASCADE,
         related_name="all_translations",
         db_column="event")
+
     name = models.CharField('Name', max_length=256)
+
     description = models.TextField('Description', default='')
 
     class Meta:

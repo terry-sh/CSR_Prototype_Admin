@@ -6,3 +6,4 @@ from .unit import UnitAdmin
 from .activity import ActivityAdmin
 from .activity_enroll import ActivityEnrollAdmin
 from .activity_event import ActivityEventAdmin
+from .activity_event_work import EventWorkAdmin

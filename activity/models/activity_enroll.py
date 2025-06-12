@@ -1,12 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from .activity import Activity
-
-APPROVE_STATUS_CHOICE = (
-    (0, 'Pending'),
-    (1, 'Approved'),
-    (2, 'Rejected'),
-)
+from .enum import APPROVE_STATUS_CHOICE
 
 # 活动报名
 # 一个用户只能在一个活动中有一条纪录

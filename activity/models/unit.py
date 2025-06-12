@@ -10,6 +10,9 @@ class Unit(models.Model):
     # 通用简写，如 y，m，d，h，km，kg等
     abbr = models.CharField('Code', max_length=64, default='')
 
+    def __str__(self):
+        return self.name
+
 # 单位（翻译）
 class UnitTranslation(models.Model):
     unit = models.ForeignKey(
